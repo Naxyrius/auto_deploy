@@ -1,6 +1,10 @@
 # auto_deploy
 Script d'automatisations de déploiements de services
 
+Ports  : 53 - TCP/UDP DNS
+         88 - TCP/UDP Kerberos
+         389 - TCP/UDP - LDAP
+ 
 1 - Hostname 
 ```powershell
 Rename-Computer -NewName SRV-AD01 -Force
