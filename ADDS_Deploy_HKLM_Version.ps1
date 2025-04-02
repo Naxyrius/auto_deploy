@@ -2,7 +2,7 @@
 Ce script PowerShell installe le rôle Active Directory Domain Services, configure une forêt Active Directory,
 et crée des unités organisationnelles (OUs) ainsi que des groupes.
 
-Ajout : Journalisation des erreurs dans le dossier Logs.
+Ajout : Journalisation des erreurs dans le dossier Logs et correction du nom du script
 #>
 
 # Variables
@@ -11,7 +11,7 @@ $DomainNetbiosName = "rhoaias"                 # Nom NetBIOS du domaine
 $DomainFQDN = "rhoaias.local"                  # FQDN du domaine
 $LogPath = "C:\Logs"                           # Chemin du dossier log
 $ErrorLogPath = "$LogPath\ErrorLog.txt"        # Fichier de log des erreurs
-$ScriptPath = "C:\deploy_ad_webinstall.ps1"    # Chemin local pour le script
+$ScriptPath = "C:\ADDS_Deploy_HKLM_Version.ps1" # Chemin local pour le script
 $FlagFilePathRename = "C:\RenameCompleted.flag" # Fichier de drapeau pour gérer le renommage
 $FlagFilePathRole = "C:\RoleInstalled.flag"     # Fichier de drapeau pour gérer l'installation du rôle
 $FlagFilePathForest = "C:\ForestConfigured.flag" # Fichier de drapeau pour gérer la configuration de la forêt
