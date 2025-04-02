@@ -1,7 +1,7 @@
 <#
 Ce script PowerShell installe le rôle Active Directory Domain Services, configure une forêt Active Directory,
-et crée des unités organisationnelles (OUs) ainsi que des groupes.
-
+et crée des unités organisationnelles (OUs).
+Auth: Naxyrius 02/04/25
 Ajout : Journalisation des erreurs dans le dossier Logs et correction du nom du script
 #>
 
