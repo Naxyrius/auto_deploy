@@ -116,11 +116,11 @@ try {
     if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'HUMANS'})) {
         New-ADOrganizationalUnit -Name "HUMANS" -Path $RootOUPath
     }
-    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'USERS'})) {
-        New-ADOrganizationalUnit -Name "USERS" -Path $RootOUPath
+    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'ADMINS'})) {
+        New-ADOrganizationalUnit -Name "ADMINS" -Path $RootOUPath
     }
-    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'ADMIN'})) {
-        New-ADOrganizationalUnit -Name "ADMIN" -Path $RootOUPath
+    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'Users'})) {
+        New-ADOrganizationalUnit -Name "Users" -Path $RootOUPath
     }
 
     Write-Host "Les unités organisationnelles ont été créées."
