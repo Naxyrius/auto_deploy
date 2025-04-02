@@ -1,8 +1,8 @@
 <#
 Ce script PowerShell installe le rôle Active Directory Domain Services, configure une forêt Active Directory,
-et crée des unités organisationnelles (OUs).
+et crée des unités organisationnelles (OUs) avec une hiérarchie spécifique.
 Auth: Naxyrius 02/04/25
-Ajout : Journalisation des erreurs dans le dossier Logs et correction du nom du script
+Ajout : Imbrication des OU
 #>
 
 # Variables
@@ -105,25 +105,31 @@ try {
     Write-ErrorLog "Erreur pendant l'attente des services AD : $_"
 }
 
-# Étape 6 : Vérifier et créer les OUs si elles n'existent pas déjà
+# Étape 6 : Vérifier et créer les OUs avec une structure hiérarchique spécifique (CORE > HUMANS > ADMINS/Users)
 try {
     Import-Module ActiveDirectory
 
-    $RootOUPath = "DC=rhoaias,DC=local"
-    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'CORE'})) {
-        New-ADOrganizationalUnit -Name "CORE" -Path $RootOUPath
-    }
-    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'HUMANS'})) {
-        New-ADOrganizationalUnit -Name "HUMANS" -Path $RootOUPath
-    }
-    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'ADMINS'})) {
-        New-ADOrganizationalUnit -Name "ADMINS" -Path $RootOUPath
-    }
-    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'Users'})) {
-        New-ADOrganizationalUnit -Name "Users" -Path $RootOUPath
+    # Création de l'OU CORE à la racine
+    $CoreOU = "OU=CORE,DC=rhoaias,DC=local"
+    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'CORE'} -SearchBase "DC=rhoaias,DC=local" -ErrorAction SilentlyContinue)) {
+        New-ADOrganizationalUnit -Name "CORE" -Path "DC=rhoaias,DC=local"
     }
 
-    Write-Host "Les unités organisationnelles ont été créées."
+    # Création de l'OU HUMANS dans CORE
+    $HumansOU = "OU=HUMANS,OU=CORE,DC=rhoaias,DC=local"
+    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'HUMANS'} -SearchBase $CoreOU -ErrorAction SilentlyContinue)) {
+        New-ADOrganizationalUnit -Name "HUMANS" -Path $CoreOU
+    }
+
+    # Création des OUs enfants ADMINS et Users dans HUMANS
+    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'ADMINS'} -SearchBase $HumansOU -ErrorAction SilentlyContinue)) {
+        New-ADOrganizationalUnit -Name "ADMINS" -Path $HumansOU
+    }
+    if (-not (Get-ADOrganizationalUnit -Filter {Name -eq 'Users'} -SearchBase $HumansOU -ErrorAction SilentlyContinue)) {
+        New-ADOrganizationalUnit -Name "Users" -Path $HumansOU
+    }
+
+    Write-Host "Les unités organisationnelles ont été créées avec la structure CORE > HUMANS > (ADMINS/Users)."
 } catch {
     Write-ErrorLog "Erreur lors de la création des unités organisationnelles : $_"
 }
