@@ -1,9 +1,12 @@
 # auto_deploy
-Script d'automatisations de déploiements de services
+Auto deploy service 
+
+
+1- ADDS
 
 Ports : 53 - TCP/UDP DNS 88 - TCP/UDP Kerberos 389 - TCP/UDP - LDAP
 
-IP Fixe : Should be Set Before use the script Host-Name, edited by the script - Change it as you please
+Static IP : Should be Set Before use the script Host-Name, edited by the script - Change it as you please
 
 The script will proceed this way : 1 - Set Hostname / Reboot 2 - Install ADDS / Reboot 3 - Add the Forest (specified in the script) + OU
 
