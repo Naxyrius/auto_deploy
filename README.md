@@ -1,30 +1,11 @@
 # auto_deploy
 Script d'automatisations de déploiements de services
 
-Ports  : 53 - TCP/UDP DNS
-         88 - TCP/UDP Kerberos
-         389 - TCP/UDP - LDAP
- 
-1 - Hostname 
-```powershell
-Rename-Computer -NewName SRV-AD01 -Force
-Restart-Computer
-```
+Ports : 53 - TCP/UDP DNS 88 - TCP/UDP Kerberos 389 - TCP/UDP - LDAP
 
-2- Config Réseau
+IP Fixe : Should be Set Before use the script Host-Name, edited by the script - Change it as you please
 
-``` Powershell
-New-NetIPAddress -IPAddress "192.168.1.10" -PrefixLength "24" -InterfaceIndex (Get-NetAdapter).ifIndex -DefaultGateway "192.168.1.1"
-```
+The script will proceed this way : 1 - Set Hostname / Reboot 2 - Install ADDS / Reboot 3 - Add the Forest (specified in the script) + OU
 
-DNS
-
-``` Powershell 
-Set-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter).ifIndex -ServerAddresses ("127.0.0.1")
-```
-
-Si besoin : rename adaptateur réseau 
-
-``` Powershell 
-Rename-NetAdapter -Name Ethernet0 -NewName LAN
-```
+The script add an HKLM input to resume the process after the reboot, the administrator must be log manually.
+/!\ In the last step (Forest ssettings and OU) you'll have to wait 60s (pause to let the ADDS Service start)
